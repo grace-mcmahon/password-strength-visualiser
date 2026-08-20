@@ -9,13 +9,21 @@ import { useState } from "react";
 // Hooks are special functions that let a component do things like 
 // "remeber" information between re-readers. useState is the hook that 
 // lets us store a value (like what the user typed) and update it later. 
-
+import zxcvbn from "zxcvbn";
+// zxcvbn is the passwword-strength library we have installed. calling 
+// zxcvbn (somePassword) analyses it and returns an object with a score,
+// warnings, and suggestions are not calculated ourselves 
 export default function Home() {
   // This is our component, lets think of it as a function that returns 
   // what should appear on the page. "export default" means this is 
-  //the main thing this file provides to the rest of the app.
+  // the main thing this file provides to the rest of the app.
+
   
   const [password, setPassword] = useState("");
+  // Every time 'password' changesm we run it through zxcvbn to get a 
+  // fresh analysis. This isn't stored in its own useState but 
+  // it's recalculated on every render, which is fine since zxcvbn 
+  // runs fast and this keeps things simple for now 
   // This line creats a varible called "password" that starts as an 
   // empty string "".
 
@@ -27,7 +35,23 @@ export default function Home() {
   // because React doesn't know when a normal variable changes, so the 
   // page wouldn't update. When you call 'setPasswrod(...)', React knows
   // to re-run this component and redraw the page with the new value. 
+  const result = zxcvbn(password);
+  // zxcvbn's score is a number from 0 to 4. We map that number to a 
+  // human-readbale label to actually show on screen. 
 
+  const strengthLabels = [
+    "Very Weak",
+    "Weak",
+    "Fair",
+    "Strong",
+    "Very Strong",
+  ];
+  const strengthLabel = strengthLabels[result.score];
+  // zxcvbn gives us specific feedback in result.feedback - a 'warning'
+  // (why it's weak, if applicable) and 'suggestions' (an array of tips).
+  // Both can be empty strongs/arrays if the passwrod if already strong.
+  
+  const { warning, suggestions } = result.feedback;
   return (
     // Everything below this line is JSX, it does look like HTML, however do not be fooled
     // it's actually just JavaScript that describes what the page should look like.
@@ -95,6 +119,26 @@ export default function Home() {
               password.length > 12
               /[0-9]/.test(password)   (contains a number)
             /[A-Z]/.test(password)   (contains a capital letter)*/}
+        {password.length > 0 && (
+          <div className="mt-6">
+            <p className="text-lg font-semibold text-zinc-900">
+              {strengthLabel}
+            </p>
+
+            {warning && (
+              <p className="mt-2 text-zinc-700">{warning}</p>
+            )}
+
+            {suggestions.length > 0 && (
+              <ul className="mt-2 space-y-1 text-zinc-600">
+                {suggestions.map((tip, i) => (
+                  <li key={i}>💡 {tip}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+
         <ul className="mt-10 space-y-4 text-zinc-700">
           {/* <ul> = "unordered list" (a bullet-point list container) */}
 
