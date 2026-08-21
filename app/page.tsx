@@ -4,7 +4,7 @@
 // But this component needs to react to the user typing in real time, which only works in the browser. so 'use client'
 // tells next.js: "run this one on the client (browser), not the server."
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // This imports a tool called a "hook" from React. 
 // Hooks are special functions that let a component do things like 
 // "remeber" information between re-readers. useState is the hook that 
@@ -20,6 +20,8 @@ export default function Home() {
 
   
   const [password, setPassword] = useState("");
+  const [breachCount, setBreachCount] = useState<number | null>(null);
+  const [checkingBreach, setCheckingBreach] = useState(false);
   // Every time 'password' changesm we run it through zxcvbn to get a 
   // fresh analysis. This isn't stored in its own useState but 
   // it's recalculated on every render, which is fine since zxcvbn 
@@ -52,11 +54,43 @@ export default function Home() {
   // Both can be empty strongs/arrays if the passwrod if already strong.
   
   const { warning, suggestions } = result.feedback;
-  return (
-    // Everything below this line is JSX, it does look like HTML, however do not be fooled
-    // it's actually just JavaScript that describes what the page should look like.
-    // React then turns this into a real HTML in the browser - clever!
+  // useEffect runs some code automatically whenever something it's
+  // watching (listed in the [] at the end) changes — here, whenever
+  // `password` changes, this whole block runs again.
+  useEffect(() => {
+    // Don't bother checking an empty password.
+    if (password.length === 0) {
+      setBreachCount(null);
+      return;
+    }
 
+    // A small delay (500ms) before actually checking — this stops us
+    // firing off a network request on every single keystroke, which
+    // would be wasteful and slow. Instead, it waits until you've
+    // paused typing for half a second.
+    const timeout = setTimeout(async () => {
+      setCheckingBreach(true);
+      try {
+        const res = await fetch("/api/check-breach", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password }),
+        });
+        const data = await res.json();
+        setBreachCount(data.breachCount ?? null);
+      } catch {
+        setBreachCount(null);
+      } finally {
+        setCheckingBreach(false);
+      }
+    }, 500);
+
+    // Cleanup: if the password changes again before the 500ms is up
+    // (i.e. you're still typing), cancel the previous timeout so we
+    // don't check an outdated, half-typed password.
+    return () => clearTimeout(timeout);
+  }, [password]);
+  return (
     < div className ="min-h-screen bg-zinc-50 flex flex-col items-center px-6 py-16">
       {/* This outer <div> just acts as a container for the whole page.
           className is how we add CSS styling in React (like "class" attribute in plain HTML). These particular classes come from
@@ -79,8 +113,8 @@ export default function Home() {
 
         {/* ---------- The actual input box the user types into ---------- */}
         <input
-          type="text"
-          // `type="text"` means it's a normal visible text field.
+          type="password"
+          // `type="password"` means text is hidden
           // (If you wanted to hide the characters like a real password
           // field, you'd use type="password" instead.)
 
@@ -138,6 +172,24 @@ export default function Home() {
             )}
           </div>
         )}
+        {/* Breach check result */}
+<div className="mt-4">
+  {checkingBreach && (
+    <p className="text-zinc-500">Checking breach history...</p>
+  )}
+  {!checkingBreach && breachCount !== null && breachCount > 0 && (
+    <p className="text-red-700">
+      This password has appeared in {breachCount.toLocaleString()}{" "}
+      known data breaches. It&apos;s best to avoid using it.
+    </p>
+  )}
+  {!checkingBreach && breachCount === 0 && (
+    <p className="text-green-700">
+      Good news — this password hasn&apos;t appeared in any
+      known data breaches.
+    </p>
+  )}
+</div>
 
         <ul className="mt-10 space-y-4 text-zinc-700">
           {/* <ul> = "unordered list" (a bullet-point list container) */}
