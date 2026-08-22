@@ -18,10 +18,11 @@ export default function Home() {
   // what should appear on the page. "export default" means this is 
   // the main thing this file provides to the rest of the app.
 
-  
+
   const [password, setPassword] = useState("");
   const [breachCount, setBreachCount] = useState<number | null>(null);
   const [checkingBreach, setCheckingBreach] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   // Every time 'password' changesm we run it through zxcvbn to get a 
   // fresh analysis. This isn't stored in its own useState but 
   // it's recalculated on every render, which is fine since zxcvbn 
@@ -52,7 +53,7 @@ export default function Home() {
   // zxcvbn gives us specific feedback in result.feedback - a 'warning'
   // (why it's weak, if applicable) and 'suggestions' (an array of tips).
   // Both can be empty strongs/arrays if the passwrod if already strong.
-  
+
   const { warning, suggestions } = result.feedback;
   // useEffect runs some code automatically whenever something it's
   // watching (listed in the [] at the end) changes — here, whenever
@@ -91,14 +92,14 @@ export default function Home() {
     return () => clearTimeout(timeout);
   }, [password]);
   return (
-    < div className ="min-h-screen bg-zinc-50 flex flex-col items-center px-6 py-16">
+    < div className="min-h-screen bg-zinc-50 flex flex-col items-center px-6 py-16">
       {/* This outer <div> just acts as a container for the whole page.
           className is how we add CSS styling in React (like "class" attribute in plain HTML). These particular classes come from
           Tailwind CSS */}
-       <div className="w-full max-w-xl">
+      <div className="w-full max-w-xl">
         {/* A second container that limits how wide the content gets,
             so it doesn't stretch across the whole screen on big monitors. */}
-        
+
         {/*------------- Page Title ----------*/}
         <h1 className="text-5xl font-serif text-zinc-900 mb-4">
           How safe is your password?
@@ -112,36 +113,24 @@ export default function Home() {
         </p>
 
         {/* ---------- The actual input box the user types into ---------- */}
-        <input
-          type="password"
-          // `type="password"` means text is hidden
-          // (If you wanted to hide the characters like a real password
-          // field, you'd use type="password" instead.)
-
-          value={password}
-          // This makes the input a "controlled" input — its visible text
-          // is always exactly whatever is stored in our `password` state
-          // variable. React is the single source of truth for what's shown.
-
-          onChange={(e) => setPassword(e.target.value)}
-          // onChange runs every single time the user types (or deletes)
-          // a character. `e` is the "event" — an object describing what
-          // just happened. `e.target.value` is the *new* full text
-          // currently in the box. We take that and pass it to
-          // setPassword(), which updates our state and triggers React
-          // to re-render the page with the latest value.
-
-          placeholder="Enter a password..."
-          // Placeholder text — light gray text shown ONLY when the box
-          // is empty, as a hint to the user. It disappears once they type.
-
-          className="w-full rounded-xl bg-zinc-100 px-5 py-4 text-lg
-                     text-zinc-800 placeholder-zinc-400 outline-none
-                     focus:ring-2 focus:ring-zinc-300"
-          // Styling only — rounded corners, padding, text size/color,
-          // and a subtle ring/glow effect when the box is focused
-          // (i.e. when the user has clicked into it).
-        />
+        <div className="relative">
+          <input
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter a password..."
+            className="w-full rounded-xl bg-zinc-100 px-5 py-4 text-lg
+               text-zinc-800 placeholder-zinc-400 outline-none
+               focus:ring-2 focus:ring-zinc-300"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-12 top-1/2 -translate-y-1/2 text-sm text-zinc-500"
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
 
         {/* ---------- Feedback list ----------
             Right now this list is STATIC — it always shows the same
@@ -173,23 +162,23 @@ export default function Home() {
           </div>
         )}
         {/* Breach check result */}
-<div className="mt-4">
-  {checkingBreach && (
-    <p className="text-zinc-500">Checking breach history...</p>
-  )}
-  {!checkingBreach && breachCount !== null && breachCount > 0 && (
-    <p className="text-red-700">
-      This password has appeared in {breachCount.toLocaleString()}{" "}
-      known data breaches. It&apos;s best to avoid using it.
-    </p>
-  )}
-  {!checkingBreach && breachCount === 0 && (
-    <p className="text-green-700">
-      Good news — this password hasn&apos;t appeared in any
-      known data breaches.
-    </p>
-  )}
-</div>
+        <div className="mt-4">
+          {checkingBreach && (
+            <p className="text-zinc-500">Checking breach history...</p>
+          )}
+          {!checkingBreach && breachCount !== null && breachCount > 0 && (
+            <p className="text-red-700">
+              This password has appeared in {breachCount.toLocaleString()}{" "}
+              known data breaches. It&apos;s best to avoid using it.
+            </p>
+          )}
+          {!checkingBreach && breachCount === 0 && (
+            <p className="text-green-700">
+              Good news — this password hasn&apos;t appeared in any
+              known data breaches.
+            </p>
+          )}
+        </div>
 
         <ul className="mt-10 space-y-4 text-zinc-700">
           {/* <ul> = "unordered list" (a bullet-point list container) */}
