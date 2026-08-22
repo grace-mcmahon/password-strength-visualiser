@@ -23,6 +23,7 @@ export default function Home() {
   const [breachCount, setBreachCount] = useState<number | null>(null);
   const [checkingBreach, setCheckingBreach] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [activeTab, setActiveTab] = useState<"check" | "examples" | "HowItWorks" | "faq">("check");
   // Every time 'password' changesm we run it through zxcvbn to get a 
   // fresh analysis. This isn't stored in its own useState but 
   // it's recalculated on every render, which is fine since zxcvbn 
@@ -111,7 +112,38 @@ export default function Home() {
           {/* &apos; is just a safe way to write an apostrophe (') inside
               JSX so React doesn't get confused by it. */}
         </p>
-
+        <div className="flex gap-2 mb-10 bg-zinc-100 rounded-full p-1 w-fit">
+          <button
+            onClick={() => setActiveTab("check")}
+            className={`px-4 py-2 rounded-full text-sm font-medium ${activeTab === "check" ? "bg-white text-zinc-900" : "text-zinc-500"
+              }`}
+          >
+            Check
+          </button>
+          <button
+            onClick={() => setActiveTab("examples")}
+            className={`px-4 py-2 rounded-full text-sm font-medium ${activeTab === "examples" ? "bg-white text-zinc-900" : "text-zinc-500"
+              }`}
+          >
+            Examples
+          </button>
+          <button
+            onClick={() => setActiveTab("HowItWorks")}
+            className={`px-4 py-2 rounded-full text-sm font-medium ${activeTab === "HowItWorks" ? "bg-white text-zinc-900" : "text-zinc-500"
+              }`}
+          >
+            How it works
+          </button>
+          <button
+            onClick={() => setActiveTab("faq")}
+            className={`px-4 py-2 rounded-full text-sm font-medium ${activeTab === "faq" ? "bg-white text-zinc-900" : "text-zinc-500"
+              }`}
+          >
+            FAQ
+          </button>
+        </div>
+{activeTab == "check" && (
+  <>
         {/* ---------- The actual input box the user types into ---------- */}
         <div className="relative">
           <input
@@ -198,7 +230,22 @@ export default function Home() {
             passwords means one breach can expose every account.
           </li>
         </ul>
-      </div>
-    </div>
+      </>
+    )}
+    {activeTab === "examples" && (
+      <p className="text-zinc-600">Examples tab coming soon.</p>
+    )}
+
+    {activeTab === "HowItWorks" && (
+      <p className="text-zinc-600">How it works tab coming soon.</p>
+    )}
+
+    {activeTab === "faq" && (
+      <p className="text-zinc-600">FAQ tab coming soon.</p>
+    )}
+
+  </div>
+</div>
   );
 }
+    
