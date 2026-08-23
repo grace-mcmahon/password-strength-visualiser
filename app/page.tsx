@@ -551,7 +551,7 @@ export default function Home() {
       {openFaq === 4 && (
         <p className="text-zinc-600 pb-4">
           Not this very second, but it's worth doing soon - ideally today. The sooner you switch to a different password
-          on any account that uses it, the better. If you've used the same password on more than one account, those are the ones yo prioritise first. 
+          on any account that uses it, the better. If you've used the same password on more than one account, those are the ones you prioritise first. 
         </p>
       )}
     </div>
@@ -640,7 +640,7 @@ export default function Home() {
         onClick={() => setOpenFaq(openFaq === 9 ? null : 9)}
         className="w-full flex items-center justify-between py-4 text-left font-semibold text-zinc-900"
       >
-        I got a "stong" result - doesn't that mean I'm completely safe?
+        I got a "strong" result - doesn't that mean I'm completely safe?
         <span className={`text-zinc-400 transition-transform ${openFaq === 9 ? "rotate-180" : ""}`}>
           ▼
         </span>
@@ -648,30 +648,13 @@ export default function Home() {
 
       {openFaq === 9 && (
         <p className="text-zinc-600 pb-4">
-          Yes we'd gently encourage changing it. Nothing gone wrong so far doesn't mean the password is safe - it may just mean no one has tried it yet.
-          Once a password appears on these lists, the risk does up over time, not down. A fresh password takes two minutes to get and removes the risk entirely.
-        </p>
-      )}
-    </div>
-    <div className="border-t border-zinc-200">
-      <button
-        onClick={() => setOpenFaq(openFaq === 10 ? null : 10)}
-        className="w-full flex items-center justify-between py-4 text-left font-semibold text-zinc-900"
-      >
-        What if I can't remember a new password?
-        <span className={`text-zinc-400 transition-transform ${openFaq === 10 ? "rotate-180" : ""}`}>
-          ▼
-        </span>
-      </button>
-
-      {openFaq === 10 && (
-        <p className="text-zinc-600 pb-4">
           A strong password is genuinely a good thing, and it significantly reduces your risk. But no single
           step makes you completely safe online. Using a different password for each account, turning on two-step verification
           where you can, and keeping your devices updated all help too. We'll always be upfront with you: strength is one piece of a bigger picture.
         </p>
       )}
     </div>
+    
     </div>
 )}
  </div>
