@@ -235,9 +235,9 @@ export default function Home() {
         )}
         {activeTab === "examples" && (
           <div className="space-y-3">
-             <p className="text-zinc-600 px-5 pb-4">
-                  Strong passwords come in a few shapes. Here are real examples - click one to see why it works
-                </p>
+            <p className="text-zinc-600 px-5 pb-4">
+              Strong passwords come in a few shapes. Here are real examples - click one to see why it works
+            </p>
 
             <div className="bg-zinc-100 rounded-xl overflow-hidden">
               <button
@@ -359,9 +359,89 @@ export default function Home() {
         )}
 
 
-
         {activeTab === "HowItWorks" && (
-          <p className="text-zinc-600">How it works tab coming soon.</p>
+          <div className="space-y-8">
+            <p className="text-zinc-600">
+              We know handing over a password, even to a tool meant to help, can
+              feel uncomfortable. Here&apos;s exactly what happens when you use this, in plain English.
+            </p>
+
+            <div>
+              <h3 className="flex items-center gap-2 font-semibold text-zinc-900 mb-2">
+                💻 Everything stays on your device
+              </h3>
+              <p className="text-zinc-600">
+                When you type a password here, it never leaves your phone or computer. The strength check happens entirely inside your browser, the same way a calculator works without phoning home.
+                Nothing is sent to us, nothing is stored anywhere, and the moment you close this page, it&apos;s gone.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="flex items-center gap-2 font-semibold text-zinc-900 mb-2">
+                🔍 How the strength check works
+              </h3>
+              <p className="text-zinc-600">
+                As you type, the tool looks at things like how long your password is, whether it uses a mix
+                of letters and numbers, and whether it matches common patterns - like using your name, a birthday, or a word from the dictonary.
+                It then gives you honest feedback about what could make it stronger.
+              </p>
+              <p className="text-zinc-600 mt-3">
+                Think of it like a knowledgable friend reading over your shoulder - except they immediately forgot what they saw.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="flex items-center gap-2 font-semibold text-zinc-900 mb-2">
+                🕵️ The data leak check - and why it's safe
+              </h3>
+              <p className="text-zinc-600">
+                You might wonder: if we're checking whether your password has appeared in a data leak,
+                doesn't that mean we have to send your passwor somewhere?
+              </p>
+              <p className="text-zinc-600 mt-3">
+                The clever answer is no. Here&apos;s the trick: instead of sending your actual password, we turn it into a short, scrambled code - like a fingerprint.
+                Then we only send the <em>first tiny fragment</em> of that fingerprint to a public database of known leaks.
+              </p>
+              <p className="text-zinc-600 mt-3">
+                The database sends back a list of possibilities, and your device quietly checks whether your fingerprints is on that list - without the database ever knowing wht you typed. Your actual password never goes anywhere.
+              </p>
+            </div>
+            <div className="bg-zinc-100 rounded-xl px-5 py-4 mt-4">
+              <p className="italic text-zinc-600">
+                Imagine posting a letter with the first line torn off. The post
+                office can sort it, but they can&apos;t read it.
+              </p>
+            </div>
+            <div>
+              <h3 className="flex items-center gap-2 font-semibold text-zinc-900 mb-2">
+              🗄️ What a data leak actually is
+              </h3>
+              < p className="text-zinc-600">
+                A "data leak" or "data breach" happens when a company&apos;s database gets stolen by hackers and the contents get shared or sold online.
+                This has happened to thousands of companies - big ones you&apos;d recognise
+              </p>
+              <p className="text-zinc-600 mt-3">
+                If your password was in one of these stolen databases, it ends up on lists that attackers use to try to break into accounts. A password that&apos;s already on those lists
+                is much easier to guess than one that isn&apos;t - which is why we flag it.
+              </p>
+              <p className="text-zinc-600 mt-3">
+                Finding out your pasword appeared in a breach doesn&apos;t mean your accounts have been hacked. It just means that particular password is now on those lists,
+                and it&apos;s worth choosing a new one.
+              </p>
+            </div>
+            <div>
+              <h3 className="flex items-center gap-2 font-semibold text-zinc-900 mb-2">
+              ❓ Why we built this
+              </h3>
+              <p className="text-zinc-600">
+                Most password tools show you a red or green bar and leavesyou to figure out the rest. We built this for people who want to understand - not just be told - whether their passwrod is safe.
+              </p>
+              <p className="text-zinc-600 mt-3">
+                There&apos;s nothing wrong with not knowing this stuff alread.
+                It&apos;s not taught anywhere. We just think everyone deservces a straight, honest answer.
+              </p>
+            </div>
+          </div>
         )}
 
         {activeTab === "faq" && (
@@ -372,4 +452,9 @@ export default function Home() {
     </div>
   );
 }
+
+
+
+
+
 
