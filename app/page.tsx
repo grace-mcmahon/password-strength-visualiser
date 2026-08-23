@@ -25,6 +25,7 @@ export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState<"check" | "examples" | "HowItWorks" | "faq">("check");
   const [openExample, setOpenExample] = useState<number | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   // Every time 'password' changesm we run it through zxcvbn to get a 
   // fresh analysis. This isn't stored in its own useState but 
   // it's recalculated on every render, which is fine since zxcvbn 
@@ -444,17 +445,236 @@ export default function Home() {
           </div>
         )}
 
-        {activeTab === "faq" && (
-          <p className="text-zinc-600">FAQ tab coming soon.</p>
-        )}
+{activeTab === "faq" && (
+  <div>
+    <p className="text-zinc-600 mb-8">
+      Honest answers to the questions we hear most often, especially
+      from people who aren&apos;t sure whether to trust a tool like this.
+    </p>
 
-      </div>
+    <p className="text-xs font-semibold tracking-wide text-zinc-400 uppercase mb-2">
+      IS THIS SAFE TO USE?
+    </p>
+
+    <div className="border-t border-zinc-200">
+      <button
+        onClick={() => setOpenFaq(openFaq === 0 ? null : 0)}
+        className="w-full flex items-center justify-between py-4 text-left font-semibold text-zinc-900"
+      >
+        Is it safe to type my real password here?
+        <span className={`text-zinc-400 transition-transform ${openFaq === 0 ? "rotate-180" : ""}`}>
+          ▼
+        </span>
+      </button>
+
+      {openFaq === 0 && (
+        <p className="text-zinc-600 pb-4">
+          Yes. Everything happens locally in your browser, nothing is
+          ever sent to a server or stored anywhere.
+        </p>
+      )}
     </div>
+    <div className="border-t border-zinc-200">
+      <button
+        onClick={() => setOpenFaq(openFaq === 1 ? null : 1)}
+        className="w-full flex items-center justify-between py-4 text-left font-semibold text-zinc-900"
+      >
+        Could someone intercept what I'm typing?
+        <span className={`text-zinc-400 transition-transform ${openFaq === 1 ? "rotate-180" : ""}`}>
+          ▼
+        </span>
+      </button>
+
+      {openFaq === 1 && (
+        <p className="text-zinc-600 pb-4">
+          No. This page runs entirely on your own device - there&apos;s nothing being sent 
+          back and forth that could be intercepted. Even the breach check (which does make a network request)
+          only sends a tiny, scrambled fragment - not your password. See the "How it works" tab for the full explanation.
+        </p>
+      )}
+    </div>
+    <div className="border-t border-zinc-200">
+      <button
+        onClick={() => setOpenFaq(openFaq === 2 ? null : 2)}
+        className="w-full flex items-center justify-between py-4 text-left font-semibold text-zinc-900"
+      >
+        Should I use my actual password, or a made-up one?
+        <span className={`text-zinc-400 transition-transform ${openFaq === 2 ? "rotate-180" : ""}`}>
+          ▼
+        </span>
+      </button>
+
+      {openFaq === 2 && (
+        <p className="text-zinc-600 pb-4">
+          Your actual password will give you the most accurate result, and 
+          it's genuinely safe to do so. But if you're not comfortable, that's completely fine - 
+          try a similar one instead. For example, if your password is "Sunflower42!", you could test "Bluebird42!" to get a 
+          realistic idea of the strength without using the real thing.
+        </p>
+      )}
+    </div>
+
+<p className="text-xs font-semibold tracking-wide text-zinc-400 uppercase mb-2 mt-8">
+      IF MY PASSWORD SHOWS UP AS BREACHED...
+    </p>
+
+    <div className="border-t border-zinc-200">
+      <button
+        onClick={() => setOpenFaq(openFaq === 3 ? null : 3)}
+        className="w-full flex items-center justify-between py-4 text-left font-semibold text-zinc-900"
+      >
+        What does it mean if my password has been breached?
+        <span className={`text-zinc-400 transition-transform ${openFaq === 3 ? "rotate-180" : ""}`}>
+          ▼
+        </span>
+      </button>
+
+      {openFaq === 3 && (
+        <p className="text-zinc-600 pb-4">
+          It means that exact password has appeared in a list of passwords stolen from other websites -
+          not necessarily yours. These lists circulate among people who try to break into accounts. It doesn't mean
+          anyone has already got into your account, but it does mean the password is a known quantity, which makes it easier to guess.
+        </p>
+      )}
+    </div>
+    <div className="border-t border-zinc-200">
+      <button
+        onClick={() => setOpenFaq(openFaq === 4 ? null : 4)}
+        className="w-full flex items-center justify-between py-4 text-left font-semibold text-zinc-900"
+      >
+        Do I need to change it right now?
+        <span className={`text-zinc-400 transition-transform ${openFaq === 4 ? "rotate-180" : ""}`}>
+          ▼
+        </span>
+      </button>
+
+      {openFaq === 4 && (
+        <p className="text-zinc-600 pb-4">
+          Not this very second, but it's worth doing soon - ideally today. The sooner you switch to a different password
+          on any account that uses it, the better. If you've used the same password on more than one account, those are the ones yo prioritise first. 
+        </p>
+      )}
+    </div>
+    <div className="border-t border-zinc-200">
+      <button
+        onClick={() => setOpenFaq(openFaq === 5 ? null : 5)}
+        className="w-full flex items-center justify-between py-4 text-left font-semibold text-zinc-900"
+      >
+        I've used this password for years and nothing bad has happened. Should I still change it?
+        <span className={`text-zinc-400 transition-transform ${openFaq === 5 ? "rotate-180" : ""}`}>
+          ▼
+        </span>
+      </button>
+
+      {openFaq === 5 && (
+        <p className="text-zinc-600 pb-4">
+          Yes we'd gently encourage changing it. Nothing gone wrong so far doesn't mean the password is safe - it may just mean no one has tried it yet.
+          Once a password appears on these lists, the risk does up over time, not down. A fresh password takes two minutes to get and removes the risk entirely.
+        </p>
+      )}
+    </div>
+    <div className="border-t border-zinc-200">
+      <button
+        onClick={() => setOpenFaq(openFaq === 6 ? null : 6)}
+        className="w-full flex items-center justify-between py-4 text-left font-semibold text-zinc-900"
+      >
+        What if I can't remember a new password?
+        <span className={`text-zinc-400 transition-transform ${openFaq === 6 ? "rotate-180" : ""}`}>
+          ▼
+        </span>
+      </button>
+
+      {openFaq === 6 && (
+        <p className="text-zinc-600 pb-4">
+          That's one of the most common worries - and it's completely understandable. 
+          A few options that work well: write it down somewhere safe at home (this is fine, despite you may have heard), use a passphrase - three or four random words strung together, like "carpet-melon-staircase" -
+          or use a password manager app, which remembers them all for you.
+        </p>
+      )}
+    </div>
+    <p className="text-xs font-semibold tracking-wide text-zinc-400 uppercase mb-2 mt-8">
+      ABOUT THIS TOOL
+    </p>
+
+    <div className="border-t border-zinc-200">
+      <button
+        onClick={() => setOpenFaq(openFaq === 7 ? null : 7)}
+        className="w-full flex items-center justify-between py-4 text-left font-semibold text-zinc-900"
+      >
+        Who made this, and why?
+        <span className={`text-zinc-400 transition-transform ${openFaq === 7 ? "rotate-180" : ""}`}>
+          ▼
+        </span>
+      </button>
+
+      {openFaq === 7 && (
+        <p className="text-zinc-600 pb-4">
+          This tool was built by a small digital literacy nonprofit. We run 
+          workshops helping people feel more confident and safe online. We built 
+          this because most password tools judge without explaining -
+          and that doesnt help anyone actually learn.
+        </p>
+      )}
+    </div>
+    <div className="border-t border-zinc-200">
+      <button
+        onClick={() => setOpenFaq(openFaq === 8 ? null : 8)}
+        className="w-full flex items-center justify-between py-4 text-left font-semibold text-zinc-900"
+      >
+        Does this tool store anything about me?
+        <span className={`text-zinc-400 transition-transform ${openFaq === 8 ? "rotate-180" : ""}`}>
+          ▼
+        </span>
+      </button>
+
+      {openFaq === 8 && (
+        <p className="text-zinc-600 pb-4">
+          No. We don't collect your password, your name, your email, your IP address, or any information that could identify you. 
+          The only thing that briefly leaves your device is an unreadbale fragment used for the breach check - and even that isn't connected
+          to you in any way.
+        </p>
+      )}
+    </div>
+    <div className="border-t border-zinc-200">
+      <button
+        onClick={() => setOpenFaq(openFaq === 9 ? null : 9)}
+        className="w-full flex items-center justify-between py-4 text-left font-semibold text-zinc-900"
+      >
+        I got a "stong" result - doesn't that mean I'm completely safe?
+        <span className={`text-zinc-400 transition-transform ${openFaq === 9 ? "rotate-180" : ""}`}>
+          ▼
+        </span>
+      </button>
+
+      {openFaq === 9 && (
+        <p className="text-zinc-600 pb-4">
+          Yes we'd gently encourage changing it. Nothing gone wrong so far doesn't mean the password is safe - it may just mean no one has tried it yet.
+          Once a password appears on these lists, the risk does up over time, not down. A fresh password takes two minutes to get and removes the risk entirely.
+        </p>
+      )}
+    </div>
+    <div className="border-t border-zinc-200">
+      <button
+        onClick={() => setOpenFaq(openFaq === 10 ? null : 10)}
+        className="w-full flex items-center justify-between py-4 text-left font-semibold text-zinc-900"
+      >
+        What if I can't remember a new password?
+        <span className={`text-zinc-400 transition-transform ${openFaq === 10 ? "rotate-180" : ""}`}>
+          ▼
+        </span>
+      </button>
+
+      {openFaq === 10 && (
+        <p className="text-zinc-600 pb-4">
+          A strong password is genuinely a good thing, and it significantly reduces your risk. But no single
+          step makes you completely safe online. Using a different password for each account, turning on two-step verification
+          where you can, and keeping your devices updated all help too. We'll always be upfront with you: strength is one piece of a bigger picture.
+        </p>
+      )}
+    </div>
+    </div>
+)}
+ </div>
+</div>
   );
 }
-
-
-
-
-
-
